@@ -1,0 +1,30 @@
+{% macro links(linkBlock) %}
+	
+	{% set newTab = linkBlock.openInNewTab %}
+	{% set classes = linkBlock.customClassName %}
+
+	{% if(linkBlock.type == 'urlLink') %}
+		<a href="{{ linkBlock.linkUrl }}" target="{{ newTab ? '_blank' : '_self' }}" class="{% if(linkBlock.chooseLinkStyles == 'primaryButton') %}btn btn-primary {% elseif(linkBlock.chooseLinkStyles == 'secondaryButton') %}btn btn-secondary {% endif %}{{classes}}">{{ linkBlock.linkCopy }}</a>
+	{% elseif(linkBlock.type == 'entryLink') %}
+		<a href="{{ linkBlock.entry.url }}" target="{{ newTab ? '_blank' : '_self' }}" class="{% if(linkBlock.chooseLinkStyles == 'primaryButton') %}btn btn-primary {% elseif(linkBlock.chooseLinkStyles == 'secondaryButton') %}btn btn-secondary {% endif %}{{ classes }}">{{ linkBlock.linkCopy }}</a>
+	{% elseif(linkBlock.type == 'assetLink') %}
+		<a href="{{ linkblock.asset[0].url }}" target="{{ newTab ? '_blank' : '_self' }}" class="{% if(linkBlock.chooseLinkStyles == 'primaryButton') %}btn btn-primary {% elseif(linkBlock.chooseLinkStyles == 'secondaryButton') %}btn btn-secondary {% endif %}{{ classes }}">{{ linkBlock.linkCopy }}</a>
+	{% elseif(linkBlock.type == 'imageAsLink') %}
+		<a href="{{ linkBlock.linkUrl }}" target="{{ newTab ? '_blank' : '_self' }}" class="{{ classes }}">
+			<img src="{{ linkBlock.image[0].url }}" alt="{{ linkBlock.image[0].title }}">
+		</a>
+	{% endif %}
+
+{% endmacro %}   
+
+{% macro socialMedia(socialBlock) %}
+	
+	{% set fontello = socialBlock.socialMediaFontelloClass %}
+	{% set url = socialBlock.socialMediaUrl %}
+	{% set newTab = socialBlock.openInNewTab %}
+	
+	<a href="{{ url }}" target="{{ newTab ? '_blank' : '_self' }}" class="inline-block">
+		<i class="{{ fontello }}">SOCIAL LINK</i>
+	</a>
+
+{% endmacro %}                           

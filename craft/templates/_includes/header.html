@@ -1,0 +1,32 @@
+<header>
+	<div class="container">
+		<div class="menu">
+			{% if(header.links.value|length) %}
+				<ul class="links logo-links">
+					{% for linkBlock in header.links %}
+						<li>{{ siteMacros.links(linkBlock) }}</li>
+					{% endfor %}
+				</ul>
+			{% endif %}
+			<nav>
+				{# Add navee config here if needed #}
+				{% set navConfig = {
+						
+				} %}
+				{% set navigation = craft.navee.getNav('primaryNavigation', navConfig) %}
+
+				<ul>
+					{% nav node in navigation %}
+				        <li{% if node.class %} class="{{node.class}}" {% endif %}>
+							<a href="{{node.link}}">{{node.title}}</a>
+							{% ifchildren %}
+								<ul>{% children %}</ul>	
+							{% endifchildren %}
+						</li>
+					{% endnav %}
+				</ul>
+			</nav>
+		</div>
+	</div>
+	{# {{ craft.navee.nav('primaryNavigation') }} #}
+</header>

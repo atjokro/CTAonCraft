@@ -1,0 +1,34 @@
+{#
+
+ # The site layout template
+ # ------------------------
+ #
+ # This layout template extends the _layouts/base.html layout, and defines the
+ # main site layout: the header, footer, and main content area.
+ #
+ # It’s never accessed directly. Instead it is extended by all of our main site
+ # templates.
+ #
+ # This template defines one block region, `main`, which should be extended by
+ # child templates to define the main contents for the page.
+-#}
+
+{% extends "_layouts/base" %}
+
+{# -- IMPORT MACROS -- #}
+	{% import '_macros/macros' as siteMacros %}
+{# -- END IMPORT MACROS -- #}
+
+{% block body %}
+	
+	{# Get HEADER #}
+	{% include '_includes/header' %}
+
+	<main id="main" role="main">
+		{% block main %}{% endblock %}
+	</main>
+	
+	{# Get FOOTER #}
+	{% include '_includes/footer' %}
+	
+{% endblock %}

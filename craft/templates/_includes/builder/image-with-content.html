@@ -1,0 +1,45 @@
+{#
+ # Builder - Image With Content include template
+ # ---------------------------------------------
+ #
+-#}
+
+{% set classes = block.customClasses %}
+{% set alignment = block.visualAlignment %}
+{% set visual = block.visualType %}
+{% set image = block.image %}
+{% set videoID = block.videoId %}
+{% set autoplay = block.videoAutoplay %}
+{% set title = block.contentTitle %}
+{% set subtitle = block.contentSubtitle %}
+{% set body = block.contentBody %}
+
+
+<div class="sectioncontainer section-builder-image-with-content">
+	<div class="section-image f{{ alignment }}">
+		{% if visual == 'image' %}
+			<img src="{{ image[0].url }}" alt="{{ image[0].title }}" class="img-responsive">
+		{% elseif visual == 'video' %}
+			<div class="video">
+				<div class="videoWrapper wideScreen">
+	                <div class="videoPadding">
+	              		<!-- Note that the inline width and height styles have been removed. -->
+	                    <div id="wistia_<?php echo $vid; ?>" class="wistia_embed"> </div>
+	                    <script>
+	                        wistiaEmbed = Wistia.embed("<?php echo $vid; ?>", {
+	                        	<?php if(get_sub_field('section_video_auto_play')) { ?>
+	                          		autoPlay: true
+	                        	<?php } else { ?>
+	                          		autoPlay: false
+	                        	<?php } ?>
+	                      	});
+	                    </script>
+	                </div>
+	            </div>
+	        </div>
+		{% endif %}
+	</div>
+	<div class="section-content f{% if alignment == 'left' %}right{% else %}left{% endif %}">
+		
+	</div>
+</div>

@@ -1,0 +1,24 @@
+<footer id="footer">
+	<div class="fcopyright footer__col">
+		{{ footer.richTextField }}
+	</div>
+	<div class="flinks footer__col">
+		<div class="flinks__title">{{ footer.linksTitle }}</div>
+		{% for linkBlock in footer.links %}
+			<li>{{ siteMacros.links(linkBlock) }}</li>
+		{% endfor %}
+	</div>
+	<div class="fsocial footer__col">
+		<div class="fsocial__title">
+			<a href="{{footer.socialHashtagLink}}" target="_blank">{{ footer.socialHashtag }}</a>
+		</div>
+		{% if(footer.socialMedia.value|length) %}
+			{% for socialBlock in footer.socialMedia %}
+				<span class="social">{{ siteMacros.socialMedia(socialBlock) }}</span>
+			{% endfor %}
+		{% endif %}
+	</div>
+	<div class="fsubscribe footer__col">
+		{{ footer.richTextField2 }}
+	</div>
+</footer>
