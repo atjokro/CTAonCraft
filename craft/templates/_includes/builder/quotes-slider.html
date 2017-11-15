@@ -3,3 +3,21 @@
  # ----------------------------------------
  #
 -#}
+
+<div class="sectioncontainer section-builder-quote-slider">
+	<div class="container">
+		<div class="section-title">
+			{{ block.sliderTitle }}
+		</div>
+		<div class="slider">
+			{% for slideBlock in block.slideMatrix %}
+				<div class="slide">
+					<div class="slide__quote">{{ slideBlock.quote }}</div>
+					<img src="{{ slideBlock.quotePicture[0].url }}" alt="{{ slideBlock.quotePicture[0].title }}" class="slide__picture" />
+					<div class="slide__name">{{ slideBlock.quoteName }}</div>
+					<div class="slide__jobdescription">{{ slideBlock.quoteJobDescription }}</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+</div>
