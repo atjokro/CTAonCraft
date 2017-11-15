@@ -40,6 +40,21 @@
 		{% endif %}
 	</div>
 	<div class="section-content f{% if alignment == 'left' %}right{% else %}left{% endif %}">
-		
+		{% if subtitle %}<div class="section-content__subtitle">{{ subtitle }}</div>{% endif %}
+		<div class="section-content__title"><h3>{{ title }}</h3></div>
+		<div class="section-content-container">
+			<div class="section-content__body">
+				{{ body }}
+			</div>
+		</div>
+		{% if block.links.value | length %}
+			<div class="section-content__button">
+				<ul class="links section-links">
+					{% for linkBlock in block.links %}
+						<li>{{ siteMacros.links(linkBlock) }}</li>
+					{% endfor %}
+				</ul>
+			</div>
+		{% endif %}
 	</div>
 </div>

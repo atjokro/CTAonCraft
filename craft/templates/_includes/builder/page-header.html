@@ -14,19 +14,19 @@
 	<div class="video-container"></div>
 	<div class="text-container">
 		<div class="container">
-			<div class="text-section">
+			<div class="text-section fLeft">
 				<div class="text-section__content">
 					{{ heroText }}
 				</div>
-				<div class="text-section__button">
-					{% if block.links.value | length %}
+				{% if block.links.value | length %}
+					<div class="text-section__button">
 						<ul class="links section-links">
 							{% for linkBlock in block.links %}
 								<li>{{ siteMacros.links(linkBlock) }}</li>
 							{% endfor %}
 						</ul>
-					{% endif %}
-				</div>
+					</div>
+				{% endif %}
 			</div>
 			<div class="img-section">
 				<img src="{{ heroImage[0].url }}" alt="{{ heroImage[0].title }}">
