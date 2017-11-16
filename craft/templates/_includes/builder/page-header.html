@@ -11,7 +11,13 @@
 {% set logo = block.headerLogo %}
 
 <div class="sectioncontainer section-builder-page-header">
-	<div class="video-container"></div>
+	<div class="video-container">
+		<div class="wistia_responsive_padding">
+			<div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;">
+				<div class="wistia_embed wistia_async_{{ videoID }} videoFoam=true" style="height:100%;width:100%;">&nbsp;</div>
+			</div>
+		</div>
+	</div>
 	<div class="text-container">
 		<div class="container">
 			<div class="text-section fLeft">

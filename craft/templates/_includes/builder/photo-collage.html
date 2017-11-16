@@ -26,7 +26,7 @@
 				{% if imageLink %}
 					<a href="{{ imageLink }}" class="img-holder" target="_blank">
 				{% endif %}	
-				<img src="{{ image[0].url }}" alt="{{ image[0].title }}" class="img-responsive photo-collage {{ shape }}.{{ loop.index }}" id="{{ shape }}.{{ loop.index }}" />
+				<img src="{{ image[0].url }}" alt="{{ image[0].title }}" class="img-responsive photo-collage {{ shape }}{{ loop.index }}" id="{{ shape }}{{ loop.index }}" />
 				{% if imageLink %}	
 					</a>
 				{% endif %}
