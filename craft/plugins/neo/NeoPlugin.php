@@ -22,7 +22,7 @@ class NeoPlugin extends BasePlugin
 
 	public function getVersion()
 	{
-		return '1.4.1';
+		return '1.5.0';
 	}
 
 	public function getCraftMinimumVersion()
@@ -37,7 +37,7 @@ class NeoPlugin extends BasePlugin
 
 	public function getSchemaVersion()
 	{
-		return '1.4.1';
+		return '1.5.0';
 	}
 
 	public function getDeveloper()
@@ -79,6 +79,9 @@ class NeoPlugin extends BasePlugin
 
 		craft()->neo_reasons->pluginInit();
 		craft()->neo_relabel->pluginInit();
+
+		craft()->on('elements.onBeforeDeleteElements', [$this, 'onBeforeDeleteElements']);
+		craft()->on('i18n.onBeforeDeleteLocale', [$this, 'onBeforeDeleteLocale']);
 
 		if(craft()->request->isCpRequest() && !craft()->request->isAjaxRequest())
 		{
@@ -144,6 +147,62 @@ class NeoPlugin extends BasePlugin
 			{
 				craft()->neo->convertFieldToMatrix($field);
 			}
+		}
+	}
+
+	/**
+	 * Cleans up Neo blocks when their parents get deleted.
+	 *
+	 * This typically happens automatically, but as a consequence of the database constraints. Explicitly calling to
+	 * delete the blocks invokes their lifecycle events, which other fields and plugins can hook into.
+	 *
+	 * This solves an issue with nested Matrix and SuperTable fields becoming orphaned if Neo's parent element is
+	 * deleted.
+	 *
+	 * (Stolen from SuperTable)
+	 * @see https://github.com/engram-design/SuperTable/commit/6bfb059d2cffe42753b4569444d00681b59a3e1d
+	 *
+	 * @param Event $e
+	 */
+	protected function onBeforeDeleteElements(Event $e)
+	{
+		$elementIds = $e->params['elementIds'];
+
+		if(count($elementIds) == 1)
+		{
+			$blockCondition = ['ownerId' => $elementIds[0]];
+		}
+		else
+		{
+			$blockCondition = ['in', 'ownerId', $elementIds];
+		}
+
+		$blockIds = craft()->db->createCommand()
+			->select('id')
+			->from('neoblocks')
+			->where($blockCondition)
+			->queryColumn();
+
+		if($blockIds)
+		{
+			craft()->neo->deleteBlockById($blockIds);
+		}
+	}
+
+	/**
+	 * Transfers all Neo content from a deleted locale if needed.
+	 * TODO
+	 *
+	 * @param Event $e
+	 */
+	protected function onBeforeDeleteLocale(Event $e)
+	{
+		$oldLocale = $e->params['localeId'];
+		$newLocale = $e->params['transferContentTo'];
+
+		if($e->performAction && $newLocale)
+		{
+			// TODO don't understand how LocalizationService::deleteSiteLocale() works at all, need to investigate first
 		}
 	}
 

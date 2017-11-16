@@ -11,6 +11,7 @@ class NeoFieldType extends BaseFieldType implements IEagerLoadingFieldType
 	// Properties
 
 	private  $_savingElement = null;
+	private  $_isNewElement = false;
 
 
 	// Public methods
@@ -43,6 +44,7 @@ class NeoFieldType extends BaseFieldType implements IEagerLoadingFieldType
 		craft()->on('elements.onBeforeSaveElement', function($e)
 		{
 			$this->_savingElement = $e->params['element'];
+			$this->_isNewElement = !((bool) $this->_savingElement->id);
 		});
 	}
 
@@ -669,7 +671,7 @@ class NeoFieldType extends BaseFieldType implements IEagerLoadingFieldType
 	 */
 	public function onAfterElementSave()
 	{
-		craft()->neo->saveFieldValue($this);
+		craft()->neo->saveFieldValue($this, $this->_isNewElement);
 
 		if(craft()->config->get('generateKeywordsWithTask', 'neo'))
 		{
@@ -732,6 +734,7 @@ class NeoFieldType extends BaseFieldType implements IEagerLoadingFieldType
 	 */
 	private function _prepareInputHtml($id, $name, $settings, $value, $static = false)
 	{
+	    $owner = isset($this->element) ? $this->element : null;
 		$locale = isset($this->element) ? $this->element->locale : null;
 
 		$blockTypeInfo = [];
@@ -760,7 +763,7 @@ class NeoFieldType extends BaseFieldType implements IEagerLoadingFieldType
 				'maxChildBlocks' => $blockType->maxChildBlocks,
 				'childBlocks' => $blockType->childBlocks,
 				'topLevel' => (bool)$blockType->topLevel,
-				'tabs' => craft()->neo->renderBlockTabs($blockType, null, $name, $static, $locale),
+				'tabs' => craft()->neo->renderBlockTabs($blockType, null, $name, $static, $locale, $owner),
 			];
 		}
 
@@ -793,6 +796,7 @@ class NeoFieldType extends BaseFieldType implements IEagerLoadingFieldType
 		}
 
 		$this->_includeResources('input', [
+			'name' => $name,
 			'namespace' => craft()->templates->namespaceInputName($name),
 			'blockTypes' => $blockTypeInfo,
 			'groups' => $groupInfo,
