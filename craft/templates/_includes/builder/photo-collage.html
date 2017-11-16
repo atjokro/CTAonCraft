@@ -1,0 +1,37 @@
+{#
+ # Builder - Photo Collage include template
+ # --------------------------------------------
+ #
+-#}
+
+{% set title = block.photoCollageSectionTitle %}
+{% set copy = block.photoCollageSectionCopy %}
+
+<div class="sectioncontainer section-builder-photo-collage">
+	<div class="container">
+		{% if title %}
+			<div class="section-title"><h2>{{ title }}</h2></div>
+		{% endif %}
+		{% if copy %}
+			<div class="section-copy-container">
+				<div class="section-copy">{{ copy }}</div>
+			</div>
+		{% endif %}
+		<div class="section-collage">
+			{% for collageBlock in block.photoCollageMatrix %}
+				{% set shape = collageBlock.imageShape %}
+				{% set image = collageBlock.image %}
+				{% set imageLink = collageBlock.imageLink %}
+
+				{% if imageLink %}
+					<a href="{{ imageLink }}" class="img-holder" target="_blank">
+				{% endif %}	
+				<img src="{{ image[0].url }}" alt="{{ image[0].title }}" class="img-responsive photo-collage {{ shape }}.{{ loop.index }}" id="{{ shape }}.{{ loop.index }}" />
+				{% if imageLink %}	
+					</a>
+				{% endif %}
+			{% endfor %}
+		</div>
+	</div>
+</div>
+
